@@ -8,6 +8,23 @@ The main idea of the paper is that variational quantum circuits can be used to l
 
 The repository includes low-dimensional transport experiments, latent-space applications, and small-scale QPU validation.
 
+```md
+## QPU scaling outlook
+
+| Config | Qubits | Params | CZ gates | Gap (true-rand) | Correct | QPU viable? |
+|---|---:|---:|---:|---:|---:|---|
+| 2q r=2 | 2 | 34 | 10 | 0.014 | 8/20 | ✅ tested |
+| 2q r=5 | 2 | 76 | 22 | 0.170 | 17/20 | ✅ tested |
+| 4q r=3 | 4 | 96 | 28 | 0.039 | 9/20 | ❌ no signal |
+| 4q r=5 | 4 | 152 | 44 | 0.131 | 15/20 | ✅ submit |
+| 6q r=2 | 6 | 102 | 30 | 0.001 | 12/20 | ❌ no signal |
+| 6q r=3 | 6 | 144 | 42 | 0.023 | 12/20 | ❌ barely |
+
+The 6-qubit configurations do not discriminate strongly enough in simulation and would likely require \(r \ge 5\), corresponding to roughly 66 CZ gates. That pushes the circuit into a regime where hardware risk becomes much less attractive for a first verification run.
+
+The strongest next QPU candidate is **4q / 2 copies / r=5**. It shows good simulated discrimination with a true-random gap of about 0.13 and correct ordering on 15 out of 20 test points, while remaining within a plausible hardware budget at 44 CZ gates. It also has an important structural advantage: it is the same multi-copy architecture used in the full Swiss Roll experiment, so a successful run would be a more meaningful step beyond the current 2-qubit validation.
+```
+
 ## Theory justification
 
 From a theoretical perspective, the model is best viewed as a bounded conditional scoring model rather than a direct quantum sampler. The score \(Q_\theta(x,y)\) is built from averaged Pauli-\(Z\) expectation values, so it is automatically bounded in \([-1,1]\). This boundedness makes the induced conditional density \(p_\theta(y \mid x) \propto e^{Q_\theta(x,y)}\) well behaved on compact domains and supports a MAP-style interpretation of inference.
